@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.aligulac.app.data.PredictMatch;
+import com.aligulac.data.PredictMatch;
 
 import java.text.NumberFormat;
 

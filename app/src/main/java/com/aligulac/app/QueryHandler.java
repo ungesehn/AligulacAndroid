@@ -1,8 +1,9 @@
 package com.aligulac.app;
 
-import com.aligulac.app.data.AligulacQuery;
+
+import com.aligulac.data.AligulacQuery;
 
 public interface QueryHandler {
 
-    void onQueryResultReceived(AligulacQuery result);
+  void onQueryResultReceived(AligulacQuery result);
 }

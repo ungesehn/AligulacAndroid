@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.aligulac.app.data.AutocompletePlayer;
+import com.aligulac.data.AutocompletePlayer;
 
 public class MainActivity extends AppCompatActivity {
 

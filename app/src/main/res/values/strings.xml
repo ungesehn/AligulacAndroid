@@ -1,15 +1,12 @@
 <resources>
     <string name="app_name">Aligulac</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_result">ResultActivity</string>
 
-    <string-array name="bestof">
-        <item>Bo1</item>
-        <item>Bo3</item>
-        <item>Bo5</item>
-        <item>Bo7</item>
-        <item>Bo9</item>
-    </string-array>
+    <string name="general_player1">Player 1</string>
+    <string name="general_player2">Player 2</string>
+
+    <string name="prediction_bestOf">Best-of</string>
+
 </resources>
