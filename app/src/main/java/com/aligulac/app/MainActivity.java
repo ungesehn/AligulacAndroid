@@ -1,5 +1,6 @@
 package com.aligulac.app;
 
+import android.animation.Animator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,28 +10,29 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Spinner;
+import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.aligulac.app.view.LoadingAutoCompleteTextView;
 import com.aligulac.data.AutocompletePlayer;
 
 public class MainActivity extends AppCompatActivity {
 
   @Bind(R.id.player1)
-  AutoCompleteTextView mPlayer1;
+  LoadingAutoCompleteTextView mPlayer1;
   @Bind(R.id.player2)
-  AutoCompleteTextView mPlayer2;
+  LoadingAutoCompleteTextView mPlayer2;
 
   @Bind(R.id.player1wrapper)
   TextInputLayout mPlayer1wrapper;
   @Bind(R.id.player2wrapper)
   TextInputLayout mPlayer2wrapper;
 
-  @Bind(R.id.boSelector)
-  Spinner mBoSelector;
+  @Bind(R.id.bestOf)
+  EditText mBestOf;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
 
+    //setup player 1 input
     mPlayer1.setAdapter(new PlayerAutoCompleteAdapter(this));
     mPlayer1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -59,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable s) {
-
       }
     });
+    mPlayer1.setLoadingIndicator(ButterKnife.findById(this, R.id.player1_loader));
 
+    //setup player 2 input
     mPlayer2.setAdapter(new PlayerAutoCompleteAdapter(this));
     mPlayer2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -72,10 +76,9 @@ public class MainActivity extends AppCompatActivity {
         mPlayer2wrapper.setErrorEnabled(false);
       }
     });
-    mPlayer1.addTextChangedListener(new TextWatcher() {
+    mPlayer2.addTextChangedListener(new TextWatcher() {
       @Override
       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        mPlayer1wrapper.setHint("Player 1");
       }
 
       @Override
@@ -85,11 +88,14 @@ public class MainActivity extends AppCompatActivity {
 
       @Override
       public void afterTextChanged(Editable s) {
-
       }
     });
+    mPlayer2.setLoadingIndicator(ButterKnife.findById(this, R.id.player2_loader));
+
+
   }
 
+  @SuppressWarnings("unchecked")
   @OnClick(R.id.btn)
   void submit() {
     AutocompletePlayer p1 = ((PlayerAutoCompleteAdapter) mPlayer1.getAdapter()).getSelectedItem();
@@ -101,11 +107,14 @@ public class MainActivity extends AppCompatActivity {
     if (p2 == null)
       mPlayer2wrapper.setError("Please select player.");
 
-    if (p1 == null || p2 == null)
+    if (mBestOf.getText().toString().isEmpty())
+      mBestOf.setError("Please select length.");
+
+    if (p1 == null || p2 == null || mBestOf.getText().toString().isEmpty())
       return;
 
     //get Bo length
-    String boLength = mBoSelector.getSelectedItem().toString().substring(2, 3);
+    String boLength = mBestOf.getText().toString();
 
     Intent intent = new Intent(this, ResultActivity.class);
     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
@@ -120,7 +129,26 @@ public class MainActivity extends AppCompatActivity {
     bundle.putString("player2:tag", p2.getTag());
     bundle.putString("bo", boLength);
     intent.putExtras(bundle);
+
+//    activityRipple();
+
     startActivity(intent, options.toBundle());
+  }
+
+  void activityRipple() {
+    View v = findViewById(R.id.reveal);
+    View fab = findViewById(R.id.btn);
+
+//    int[] pos = new int[2];
+//    fab.getLocationOnScreen(pos);
+
+    int cx = v.getRight();
+    int cy = v.getBottom();
+
+    int finalRadius = Math.max(v.getWidth(), v.getHeight());
+    Animator animator = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);
+    v.setVisibility(View.VISIBLE);
+    animator.start();
   }
 
 }

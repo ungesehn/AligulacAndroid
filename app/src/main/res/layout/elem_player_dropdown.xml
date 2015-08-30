@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:paddingStart="8dp"
+              android:paddingEnd="8dp"
+              android:layout_height="?android:attr/listPreferredItemHeight">
+
+    <ImageView android:id="@+id/player_flag"
+               android:layout_width="24dp"
+               android:layout_height="24dp"
+               tools:src="@drawable/kr"
+               android:layout_gravity="center_vertical"/>
+
+    <ImageView android:id="@+id/player_race"
+               android:layout_width="24dp"
+               android:layout_height="24dp"
+               tools:src="@drawable/ic_zerg"
+               android:layout_marginStart="8dp"
+               android:layout_gravity="center_vertical"
+               android:tint="@color/primary_dark"/>
+
+    <TextView android:id="@+id/text1"
+              style="?android:attr/dropDownItemStyle"
+              android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+              android:singleLine="true"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:text="Player 1"
+              android:ellipsize="marquee"/>
+
+</LinearLayout>

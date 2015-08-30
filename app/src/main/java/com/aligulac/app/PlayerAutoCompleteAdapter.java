@@ -1,14 +1,13 @@
 package com.aligulac.app;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.TextView;
+import android.widget.*;
+import butterknife.ButterKnife;
 import com.aligulac.app.api.AligulacQueryInterface;
 import com.aligulac.data.AligulacQuery;
 import com.aligulac.data.AutocompletePlayer;
@@ -48,9 +47,19 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null)
-      convertView = LayoutInflater.from(mCtx).inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
+      convertView = LayoutInflater.from(mCtx).inflate(R.layout.elem_player_dropdown, parent, false);
 
-    ((TextView) convertView.findViewById(android.R.id.text1)).setText(getItem(position).getTag());
+    AutocompletePlayer player = getItem(position);
+
+    ((TextView) convertView.findViewById(R.id.text1)).setText(player.getTag());
+
+    ImageView iv = ButterKnife.findById(convertView, R.id.player_flag);
+    int id = mCtx.getResources().getIdentifier(countryToDrawable(player.getCountry()), "drawable", mCtx.getPackageName());
+    iv.setImageResource(id);
+
+    iv = ButterKnife.findById(convertView, R.id.player_race);
+    id = mCtx.getResources().getIdentifier(raceToDrawable(player.getRace()), "drawable", mCtx.getPackageName());
+    iv.setImageResource(id);
 
     return convertView;
   }
@@ -106,5 +115,28 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
       return getItem(mSelectedItem);
     else
       return null;
+  }
+
+  private String raceToDrawable(String race) {
+    if (TextUtils.isEmpty(race))
+      return "";
+    else {
+      switch (race) {
+        case "Z":
+          return "ic_zerg";
+        case "P":
+          return "ic_protoss";
+        case "T":
+          return "ic_terran";
+      }
+      return "";
+    }
+  }
+
+  private String countryToDrawable(String country) {
+    if (TextUtils.isEmpty(country))
+      return "";
+    else
+      return country.toLowerCase();
   }
 }

@@ -17,7 +17,7 @@ public class PredictionTask extends AsyncTask<Integer, Void, PredictMatch> {
    * Provide playerId1, playerId2, length of Bo
    * so we have 3 elements in total
    *
-   * @param params
+   * @param params List of three elements
    * @return Match prediction or null if something went wrong
    */
   @Override

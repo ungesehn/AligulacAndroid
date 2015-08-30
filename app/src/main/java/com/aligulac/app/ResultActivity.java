@@ -35,7 +35,6 @@ public class ResultActivity extends AppCompatActivity implements ResultHandler {
     mPlayer1.setText(bundle.getString("player1:tag"));
     mPlayer2.setText(bundle.getString("player2:tag"));
 
-
     int boLength = Integer.parseInt(bundle.getString("bo"));
 
     new PredictionTask(this).execute(p1Id, p2Id, boLength);

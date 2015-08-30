@@ -20,9 +20,7 @@ public class QueryTask extends AsyncTask<String, Void, AligulacQuery> {
       .build();
 
     AligulacQueryInterface service = restAdapter.create(AligulacQueryInterface.class);
-    AligulacQuery q = service.query(params[0]);
-
-    return q;
+    return service.query(params[0]);
   }
 
   @Override
