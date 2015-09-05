@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="8dp"
+          android:paddingTop="8dp">
+
+    <TextView android:id="@+id/outcome_p1"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              tools:text="52%"
+              android:layout_marginEnd="8dp"
+              style="@style/TextAppearance.AppCompat.Body2"/>
+
+    <TextView android:id="@+id/stats_p1"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              tools:text="1-0"
+              style="@style/TextAppearance.AppCompat.Body1"/>
+
+    <TextView android:id="@+id/stats_p2"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              tools:text="0-1"
+              android:gravity="end"
+              android:layout_marginEnd="8dp"
+              style="@style/TextAppearance.AppCompat.Body1"/>
+
+    <TextView android:id="@+id/outcome_p2"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              tools:text="52%"
+              android:layout_gravity="end"
+              style="@style/TextAppearance.AppCompat.Body2"/>
+
+</TableRow>

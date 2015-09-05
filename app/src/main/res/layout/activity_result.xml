@@ -42,5 +42,4 @@
         android:layout_below="@id/player2"
         tools:text="50%" />
 
-
 </RelativeLayout>
