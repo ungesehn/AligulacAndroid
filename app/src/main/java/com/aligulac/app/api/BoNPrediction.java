@@ -2,6 +2,7 @@ package com.aligulac.app.api;
 
 
 import com.aligulac.data.PredictMatch;
+import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -9,6 +10,6 @@ import retrofit.http.Query;
 public interface BoNPrediction {
 
   @GET("/api/v1/predictmatch/{player1},{player2}")
-  PredictMatch predictBoNMatch(@Path("player1") int player1, @Path("player2") int player2, @Query("bo") int boLength);
+  PredictMatch predictBoNMatch(@Path("player1") int player1, @Path("player2") int player2, @Query("bo") int boLength, Callback<PredictMatch> cb);
 
 }

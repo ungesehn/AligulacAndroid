@@ -10,10 +10,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.aligulac.data.Outcomes;
 import com.aligulac.data.PredictMatch;
+import org.parceler.Parcels;
 
 import java.text.NumberFormat;
 
-public class ResultActivity extends AppCompatActivity implements ResultHandler {
+public class ResultActivity extends AppCompatActivity {
 
   @Bind(R.id.player1)
   TextView mPlayer1;
@@ -31,50 +32,53 @@ public class ResultActivity extends AppCompatActivity implements ResultHandler {
     setContentView(R.layout.activity_result2);
     ButterKnife.bind(this);
 
-    Bundle bundle = getIntent().getExtras();
+    PredictMatch example = Parcels.unwrap(getIntent().getParcelableExtra("prediction"));
 
-    int p1Id = bundle.getInt("player1:id");
-    int p2Id = bundle.getInt("player2:id");
+    onResultReceived(example);
 
-    mPlayer1.setText(bundle.getString("player1:tag"));
-    mPlayer2.setText(bundle.getString("player2:tag"));
-
-    int boLength = Integer.parseInt(bundle.getString("bo"));
-
-    new PredictionTask(this).execute(p1Id, p2Id, boLength);
+//    Bundle bundle = getIntent().getExtras();
+//
+//    int p1Id = bundle.getInt("player1:id");
+//    int p2Id = bundle.getInt("player2:id");
+//
+//    mPlayer1.setText(bundle.getString("player1:tag"));
+//    mPlayer2.setText(bundle.getString("player2:tag"));
+//
+//    int boLength = Integer.parseInt(bundle.getString("bo"));
+//
+//    new PredictionTask(this).execute(p1Id, p2Id, boLength);
   }
 
-  @Override
-  public void onResultReceived(Object result) {
-    if (result instanceof PredictMatch) {
-      PredictMatch prediction = (PredictMatch) result;
-      NumberFormat nf = NumberFormat.getPercentInstance();
-      nf.setMaximumFractionDigits(2);
-      mProbabilityPlayer1.setText(nf.format(prediction.getProba()));
-      mProbabilityPlayer2.setText(nf.format(prediction.getProbb()));
+  public void onResultReceived(PredictMatch prediction) {
+    mPlayer1.setText(prediction.getPla().getTag());
+    mPlayer2.setText(prediction.getPlb().getTag());
 
-      //add outcomes to table
-      View root = findViewById(R.id.outcomes_table);
-      int rows = Math.round(prediction.getOutcomes().size() / 2);
-      for (int i = 0; i < rows; i++) {
-        Outcomes out1 = prediction.getOutcomes().get(i);
-        Outcomes out2 = prediction.getOutcomes().get(i + rows);
+    NumberFormat nf = NumberFormat.getPercentInstance();
+    nf.setMaximumFractionDigits(2);
+    mProbabilityPlayer1.setText(nf.format(prediction.getProba()));
+    mProbabilityPlayer2.setText(nf.format(prediction.getProbb()));
 
-        View row = LayoutInflater.from(this).inflate(R.layout.elem_outcome, (ViewGroup) root, false);
-        TextView tv;
-        //set outcomes
-        tv = ButterKnife.findById(row, R.id.outcome_p1);
-        tv.setText(nf.format(out1.getProb()));
-        tv = ButterKnife.findById(row, R.id.outcome_p2);
-        tv.setText(nf.format(out2.getProb()));
-        //set stats
-        tv = ButterKnife.findById(row, R.id.stats_p1);
-        tv.setText(out1.getScoreCombined());
-        tv = ButterKnife.findById(row, R.id.stats_p2);
-        tv.setText(out2.getScoreCombined());
-        //add to table
-        ((ViewGroup) root).addView(row);
-      }
+    //add outcomes to table
+    View root = findViewById(R.id.outcomes_table);
+    int rows = Math.round(prediction.getOutcomes().size() / 2);
+    for (int i = 0; i < rows; i++) {
+      Outcomes out1 = prediction.getOutcomes().get(i);
+      Outcomes out2 = prediction.getOutcomes().get(i + rows);
+
+      View row = LayoutInflater.from(this).inflate(R.layout.elem_outcome, (ViewGroup) root, false);
+      TextView tv;
+      //set outcomes
+      tv = ButterKnife.findById(row, R.id.outcome_p1);
+      tv.setText(nf.format(out1.getProb()));
+      tv = ButterKnife.findById(row, R.id.outcome_p2);
+      tv.setText(nf.format(out2.getProb()));
+      //set stats
+      tv = ButterKnife.findById(row, R.id.stats_p1);
+      tv.setText(out1.getScoreCombined());
+      tv = ButterKnife.findById(row, R.id.stats_p2);
+      tv.setText(out2.getScoreCombined());
+      //add to table
+      ((ViewGroup) root).addView(row);
 
     }
   }

@@ -1,10 +1,16 @@
 
 package com.aligulac.data;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Outcomes {
-  private Number prob;
-  private Number sca;
-  private Number scb;
+  Number prob;
+  Number sca;
+  Number scb;
+
+  public Outcomes() {
+  }
 
   public Number getProb() {
     return this.prob;

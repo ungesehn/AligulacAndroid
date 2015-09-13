@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -16,8 +18,16 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.aligulac.app.api.AligulacAPI;
 import com.aligulac.app.view.LoadingAutoCompleteTextView;
 import com.aligulac.data.AutocompletePlayer;
+import com.aligulac.data.PredictMatch;
+import com.github.jorgecastilloprz.FABProgressCircle;
+import org.parceler.Parcels;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
   @Bind(R.id.bestOf)
   EditText mBestOf;
+
+  @Bind(R.id.fabProgressCircle)
+  FABProgressCircle mProgressCircle;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +104,13 @@ public class MainActivity extends AppCompatActivity {
       }
     });
     mPlayer2.setLoadingIndicator(ButterKnife.findById(this, R.id.player2_loader));
+  }
 
-
+  @Override
+  protected void onResume() {
+    super.onResume();
+    //reset button state
+    mProgressCircle.hide();
   }
 
   @SuppressWarnings("unchecked")
@@ -113,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
     if (p1 == null || p2 == null || mBestOf.getText().toString().isEmpty())
       return;
 
+    mProgressCircle.show();
+
     //get Bo length
     String boLength = mBestOf.getText().toString();
 
@@ -122,15 +142,55 @@ public class MainActivity extends AppCompatActivity {
       new Pair<View, String>(mPlayer2, "player2"));
 
     // start the new activity
-    Bundle bundle = options.toBundle();
-    bundle.putInt("player1:id", p1.getId());
-    bundle.putInt("player2:id", p2.getId());
-    bundle.putString("player1:tag", p1.getTag());
-    bundle.putString("player2:tag", p2.getTag());
-    bundle.putString("bo", boLength);
-    intent.putExtras(bundle);
+//    Bundle bundle = options.toBundle();
+//    bundle.putInt("player1:id", p1.getId());
+//    bundle.putInt("player2:id", p2.getId());
+//    bundle.putString("player1:tag", p1.getTag());
+//    bundle.putString("player2:tag", p2.getTag());
+//    bundle.putString("bo", boLength);
+//    intent.putExtras(bundle);
 
 //    activityRipple();
+//    new PredictionTask(this).execute(p1.getId(), p2.getId(), Integer.valueOf(boLength));
+
+    executeTask(p1.getId(), p2.getId(), Integer.valueOf(boLength));
+
+    //startActivity(intent, options.toBundle());
+  }
+
+  private void executeTask(int p1, int p2, int bo) {
+    RestAdapter restAdapter = new RestAdapter.Builder()
+      .setEndpoint(AligulacConstants.BASE_URL)
+      .setLogLevel(RestAdapter.LogLevel.FULL)
+      .setRequestInterceptor(new AligulacRequestInterceptor())
+      .build();
+
+    AligulacAPI api = restAdapter.create(AligulacAPI.class);
+    api.predictBoNMatch(p1, p2, bo, new Callback<PredictMatch>() {
+      @Override
+      public void success(PredictMatch predictMatch, Response response) {
+        openResultActivity(predictMatch);
+      }
+
+      @Override
+      public void failure(RetrofitError error) {
+        Snackbar.make(findViewById(R.id.coordinatorLayout), "Error", Snackbar.LENGTH_LONG).show();
+      }
+    });
+
+  }
+
+  private void openResultActivity(PredictMatch prediction) {
+    Intent intent = new Intent(this, ResultActivity.class);
+    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
+      new Pair<View, String>(mPlayer1, "player1"),
+      new Pair<View, String>(mPlayer2, "player2"));
+
+    Parcelable wrapped = Parcels.wrap(prediction);
+
+    Bundle bundle = options.toBundle();
+    bundle.putParcelable("prediction", wrapped);
+    intent.putExtras(bundle);
 
     startActivity(intent, options.toBundle());
   }

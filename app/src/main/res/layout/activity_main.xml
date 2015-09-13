@@ -117,15 +117,25 @@
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true">
 
-        <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btn"
+        <com.github.jorgecastilloprz.FABProgressCircle
+                android:id="@+id/fabProgressCircle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_search_white_24dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_gravity="bottom|right"
-                app:fabSize="normal"/>
+                android:layout_gravity="bottom|end"
+                app:arcColor="@color/primary">
+
+            <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search_white_24dp"
+                    app:fabSize="normal"
+                    android:layout_margin="16dp"
+                    app:elevation="8dp"
+                    app:borderWidth="0dp"
+                    />
+
+        </com.github.jorgecastilloprz.FABProgressCircle>
 
     </android.support.design.widget.CoordinatorLayout>
 
