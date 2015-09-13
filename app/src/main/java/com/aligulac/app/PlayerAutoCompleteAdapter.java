@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.ButterKnife;
-import com.aligulac.app.api.AligulacQueryInterface;
+import com.aligulac.app.api.AligulacAPI;
 import com.aligulac.data.AligulacQuery;
 import com.aligulac.data.AutocompletePlayer;
 import retrofit.RestAdapter;
@@ -100,14 +100,10 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
       .setLogLevel(RestAdapter.LogLevel.FULL)
       .build();
 
-    AligulacQueryInterface service = restAdapter.create(AligulacQueryInterface.class);
+    AligulacAPI service = restAdapter.create(AligulacAPI.class);
     AligulacQuery q = service.query(name);
 
     return q.getPlayers();
-  }
-
-  public void setSelectedItem(int pos) {
-    mSelectedItem = pos;
   }
 
   public AutocompletePlayer getSelectedItem() {
@@ -115,6 +111,10 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
       return getItem(mSelectedItem);
     else
       return null;
+  }
+
+  public void setSelectedItem(int pos) {
+    mSelectedItem = pos;
   }
 
   private String raceToDrawable(String race) {

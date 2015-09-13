@@ -34,22 +34,10 @@ public class ResultActivity extends AppCompatActivity {
 
     PredictMatch example = Parcels.unwrap(getIntent().getParcelableExtra("prediction"));
 
-    onResultReceived(example);
-
-//    Bundle bundle = getIntent().getExtras();
-//
-//    int p1Id = bundle.getInt("player1:id");
-//    int p2Id = bundle.getInt("player2:id");
-//
-//    mPlayer1.setText(bundle.getString("player1:tag"));
-//    mPlayer2.setText(bundle.getString("player2:tag"));
-//
-//    int boLength = Integer.parseInt(bundle.getString("bo"));
-//
-//    new PredictionTask(this).execute(p1Id, p2Id, boLength);
+    setPredictionResults(example);
   }
 
-  public void onResultReceived(PredictMatch prediction) {
+  public void setPredictionResults(PredictMatch prediction) {
     mPlayer1.setText(prediction.getPla().getTag());
     mPlayer2.setText(prediction.getPlb().getTag());
 

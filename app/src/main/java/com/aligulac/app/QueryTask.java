@@ -1,7 +1,7 @@
 package com.aligulac.app;
 
 import android.os.AsyncTask;
-import com.aligulac.app.api.AligulacQueryInterface;
+import com.aligulac.app.api.AligulacAPI;
 import com.aligulac.data.AligulacQuery;
 import retrofit.RestAdapter;
 
@@ -19,7 +19,7 @@ public class QueryTask extends AsyncTask<String, Void, AligulacQuery> {
       .setEndpoint(AligulacConstants.BASE_URL)
       .build();
 
-    AligulacQueryInterface service = restAdapter.create(AligulacQueryInterface.class);
+    AligulacAPI service = restAdapter.create(AligulacAPI.class);
     return service.query(params[0]);
   }
 
