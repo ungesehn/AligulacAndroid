@@ -1,5 +1,8 @@
 package com.aligulac.data;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class AutocompletePlayer {
 
   String tag;
