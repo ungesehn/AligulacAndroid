@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.ButterKnife;
 import com.aligulac.app.api.AligulacAPI;
+import com.aligulac.app.api.AligulacConstants;
 import com.aligulac.data.AligulacQuery;
 import com.aligulac.data.AutocompletePlayer;
 import retrofit.RestAdapter;
@@ -27,6 +28,27 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
   public PlayerAutoCompleteAdapter(Context context) {
     mCtx = context;
     mItems = new ArrayList<>();
+  }
+
+  public static String raceToDrawable(String race) {
+    if (TextUtils.isEmpty(race))
+      return "";
+    else {
+      switch (race) {
+        case "Z":
+          return "ic_zerg";
+        case "P":
+          return "ic_protoss";
+        case "T":
+          return "ic_terran";
+        default:
+          return "";
+      }
+    }
+  }
+
+  public static String countryToDrawable(String country) {
+    return TextUtils.isEmpty(country) ? "" : country.toLowerCase();
   }
 
   @Override
@@ -93,7 +115,7 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
   }
 
   private List<AutocompletePlayer> getPlayers(String name) {
-    Log.d("PlayerAutoCompleteAdapter", "requesting::" + name);
+    Log.d(TAG, "requesting::" + name);
 
     RestAdapter restAdapter = new RestAdapter.Builder()
       .setEndpoint(AligulacConstants.BASE_URL)
@@ -115,28 +137,5 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
 
   public void setSelectedItem(int pos) {
     mSelectedItem = pos;
-  }
-
-  private String raceToDrawable(String race) {
-    if (TextUtils.isEmpty(race))
-      return "";
-    else {
-      switch (race) {
-        case "Z":
-          return "ic_zerg";
-        case "P":
-          return "ic_protoss";
-        case "T":
-          return "ic_terran";
-      }
-      return "";
-    }
-  }
-
-  private String countryToDrawable(String country) {
-    if (TextUtils.isEmpty(country))
-      return "";
-    else
-      return country.toLowerCase();
   }
 }

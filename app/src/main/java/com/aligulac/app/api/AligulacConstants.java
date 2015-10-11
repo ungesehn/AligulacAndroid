@@ -1,4 +1,4 @@
-package com.aligulac.app;
+package com.aligulac.app.api;
 
 public class AligulacConstants {
 

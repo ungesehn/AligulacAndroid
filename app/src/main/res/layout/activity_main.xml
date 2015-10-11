@@ -66,8 +66,7 @@
             <android.support.design.widget.TextInputLayout
                     android:id="@+id/player2wrapper"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                 <com.aligulac.app.view.LoadingAutoCompleteTextView
                         android:id="@+id/player2"
@@ -75,8 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
-                        android:lines="1"
-                        />
+                        android:lines="1"/>
 
             </android.support.design.widget.TextInputLayout>
 

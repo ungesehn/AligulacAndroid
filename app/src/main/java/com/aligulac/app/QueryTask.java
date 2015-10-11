@@ -2,6 +2,7 @@ package com.aligulac.app;
 
 import android.os.AsyncTask;
 import com.aligulac.app.api.AligulacAPI;
+import com.aligulac.app.api.AligulacConstants;
 import com.aligulac.data.AligulacQuery;
 import retrofit.RestAdapter;
 

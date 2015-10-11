@@ -19,6 +19,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.aligulac.app.api.AligulacAPI;
+import com.aligulac.app.api.AligulacConstants;
+import com.aligulac.app.api.AligulacRequestInterceptor;
+import com.aligulac.app.util.ActivityConstants;
+import com.aligulac.app.util.Utils;
 import com.aligulac.app.view.LoadingAutoCompleteTextView;
 import com.aligulac.data.AutocompletePlayer;
 import com.aligulac.data.PredictMatch;
@@ -109,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    //reset button state
-    mProgressCircle.hide();
   }
 
   @SuppressWarnings("unchecked")
@@ -131,31 +133,19 @@ public class MainActivity extends AppCompatActivity {
     if (p1 == null || p2 == null || mBestOf.getText().toString().isEmpty())
       return;
 
-    mProgressCircle.show();
+    //check for network connectivity
+    if (Utils.isConnected(this)) {
+      mProgressCircle.show();
 
-    //get Bo length
-    String boLength = mBestOf.getText().toString();
+      //get Bo length
+      String boLength = mBestOf.getText().toString();
 
-    Intent intent = new Intent(this, ResultActivity.class);
-    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
-      new Pair<View, String>(mPlayer1, "player1"),
-      new Pair<View, String>(mPlayer2, "player2"));
-
-    // start the new activity
-//    Bundle bundle = options.toBundle();
-//    bundle.putInt("player1:id", p1.getId());
-//    bundle.putInt("player2:id", p2.getId());
-//    bundle.putString("player1:tag", p1.getTag());
-//    bundle.putString("player2:tag", p2.getTag());
-//    bundle.putString("bo", boLength);
-//    intent.putExtras(bundle);
-
-//    activityRipple();
-//    new PredictionTask(this).execute(p1.getId(), p2.getId(), Integer.valueOf(boLength));
-
-    executeTask(p1.getId(), p2.getId(), Integer.valueOf(boLength));
-
-    //startActivity(intent, options.toBundle());
+      executeTask(p1.getId(), p2.getId(), Integer.valueOf(boLength));
+    } else {
+      //show hint to the user if not connected to the internet
+      Snackbar.make(ButterKnife.findById(this, R.id.coordinatorLayout),
+        "Not connected to the internet.", Snackbar.LENGTH_LONG).show();
+    }
   }
 
   private void executeTask(int p1, int p2, int bo) {
@@ -186,13 +176,23 @@ public class MainActivity extends AppCompatActivity {
       new Pair<View, String>(mPlayer1, "player1"),
       new Pair<View, String>(mPlayer2, "player2"));
 
-    Parcelable wrapped = Parcels.wrap(prediction);
+    Parcelable result = Parcels.wrap(prediction);
+    Parcelable p1 = Parcels.wrap(((PlayerAutoCompleteAdapter) mPlayer1.getAdapter()).getSelectedItem());
+    Parcelable p2 = Parcels.wrap(((PlayerAutoCompleteAdapter) mPlayer2.getAdapter()).getSelectedItem());
 
     Bundle bundle = options.toBundle();
-    bundle.putParcelable("prediction", wrapped);
+    bundle.putParcelable(ActivityConstants.BUNDLE_RESULT, result);
+    bundle.putParcelable(ActivityConstants.BUNDLE_RESULT_PLAYER_1, p1);
+    bundle.putParcelable(ActivityConstants.BUNDLE_RESULT_PLAYER_2, p2);
     intent.putExtras(bundle);
 
     startActivity(intent, options.toBundle());
+
+    resetLoadingState();
+  }
+
+  private void resetLoadingState() {
+    mProgressCircle.hide();
   }
 
   void activityRipple() {

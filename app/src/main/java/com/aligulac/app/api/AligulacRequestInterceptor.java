@@ -1,5 +1,6 @@
-package com.aligulac.app;
+package com.aligulac.app.api;
 
+import com.aligulac.app.BuildConfig;
 import retrofit.RequestInterceptor;
 
 public class AligulacRequestInterceptor implements RequestInterceptor {
