@@ -5,17 +5,15 @@
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
 
-# lint folder
-lint
-
 # generated files
 bin/
 gen/
 classes/
 gen-external-apklibs/
 
-# API KEY
+# KEYS / CUSTOM PROPERTIES
 /secure.properties
+signing.gradle
 
 # Local configuration file (sdk path, etc)
 local.properties

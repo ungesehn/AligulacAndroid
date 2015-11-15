@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.hugo'
+apply from: 'signing.gradle'
 
 android {
     compileSdkVersion 23
@@ -15,9 +16,11 @@ android {
         buildConfigField "String", "SUPPORT_MAIL", getSupportMail()
     }
 
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
