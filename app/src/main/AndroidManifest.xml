@@ -27,7 +27,9 @@
                 android:screenOrientation="portrait">
         </activity>
         <activity android:name=".InfoActivity"
-                  android:label="@string/activity_info">
+                  android:label="@string/activity_info"
+                  android:parentActivityName=".MainActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 
