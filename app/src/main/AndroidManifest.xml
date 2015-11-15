@@ -14,7 +14,7 @@
                 android:name=".MainActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait">
-            <intent-filter>
+            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -22,9 +22,12 @@
         </activity>
         <activity
                 android:name=".ResultActivity"
-                android:label="@string/title_activity_result"
-                android:screenOrientation="portrait"
-                android:parentActivityName=".MainActivity">
+                android:label="@string/activity_result"
+                android:parentActivityName=".MainActivity"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".InfoActivity"
+                  android:label="@string/activity_info">
         </activity>
     </application>
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,11 +53,17 @@ public class ResultActivity extends AppCompatActivity {
 
     ImageView iv = ButterKnife.findById(this, R.id.flagPlayer1);
     int id = getResources().getIdentifier(PlayerAutoCompleteAdapter.countryToDrawable(player1.getCountry()), "drawable", getPackageName());
-    iv.setImageResource(id);
+    if (id != 0)
+      iv.setImageResource(id);
+    else
+      iv.setImageDrawable(null);
 
     iv = ButterKnife.findById(this, R.id.flagPlayer2);
     id = getResources().getIdentifier(PlayerAutoCompleteAdapter.countryToDrawable(player2.getCountry()), "drawable", getPackageName());
-    iv.setImageResource(id);
+    if (id != 0)
+      iv.setImageResource(id);
+    else
+      iv.setImageDrawable(null);
   }
 
   public void setPredictionResults(PredictMatch prediction) {
@@ -66,7 +73,7 @@ public class ResultActivity extends AppCompatActivity {
     mProbabilityPlayer2.setText(nf.format(prediction.getProbb()));
 
     //add outcomes to table
-    View root = findViewById(R.id.outcomes_table);
+    LinearLayout root = ButterKnife.findById(this, R.id.outcomes_table);
     int rows = Math.round(prediction.getOutcomes().size() / 2);
     for (int i = 0; i < rows; i++) {
       Outcomes out1 = prediction.getOutcomes().get(i);
@@ -86,7 +93,9 @@ public class ResultActivity extends AppCompatActivity {
       tv.setText(out2.getScoreCombined());
       //add to table
       ((ViewGroup) root).addView(row);
-
+      if (i < rows - 1) {
+        LayoutInflater.from(this).inflate(R.layout.divider, (ViewGroup) root, true);
+      }
     }
   }
 }

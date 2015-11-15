@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import butterknife.ButterKnife;
-import com.aligulac.app.api.AligulacAPI;
-import com.aligulac.app.api.AligulacConstants;
+import com.aligulac.app.api.AligulacService;
 import com.aligulac.data.AligulacQuery;
 import com.aligulac.data.AutocompletePlayer;
-import retrofit.RestAdapter;
+import hugo.weaving.DebugLog;
+import retrofit.RetrofitError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,14 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
   private static final String TAG = "PlayerACAdapter";
   private Context mCtx;
   private List<AutocompletePlayer> mItems;
+  private int mPlayer;
 
   private int mSelectedItem = -1;
 
-  public PlayerAutoCompleteAdapter(Context context) {
+  public PlayerAutoCompleteAdapter(Context context, int player) {
     mCtx = context;
     mItems = new ArrayList<>();
+    mPlayer = player;
   }
 
   public static String raceToDrawable(String race) {
@@ -47,6 +49,7 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
     }
   }
 
+  @DebugLog
   public static String countryToDrawable(String country) {
     return TextUtils.isEmpty(country) ? "" : country.toLowerCase();
   }
@@ -77,11 +80,17 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
 
     ImageView iv = ButterKnife.findById(convertView, R.id.player_flag);
     int id = mCtx.getResources().getIdentifier(countryToDrawable(player.getCountry()), "drawable", mCtx.getPackageName());
-    iv.setImageResource(id);
+    if (id != 0)
+      iv.setImageResource(id);
+    else
+      iv.setImageDrawable(null);
 
     iv = ButterKnife.findById(convertView, R.id.player_race);
     id = mCtx.getResources().getIdentifier(raceToDrawable(player.getRace()), "drawable", mCtx.getPackageName());
-    iv.setImageResource(id);
+    if (id != 0)
+      iv.setImageResource(id);
+    else
+      iv.setImageDrawable(null);
 
     return convertView;
   }
@@ -117,13 +126,18 @@ public class PlayerAutoCompleteAdapter extends BaseAdapter implements Filterable
   private List<AutocompletePlayer> getPlayers(String name) {
     Log.d(TAG, "requesting::" + name);
 
-    RestAdapter restAdapter = new RestAdapter.Builder()
-      .setEndpoint(AligulacConstants.BASE_URL)
-      .setLogLevel(RestAdapter.LogLevel.FULL)
-      .build();
+    AligulacQuery q = null;
 
-    AligulacAPI service = restAdapter.create(AligulacAPI.class);
-    AligulacQuery q = service.query(name);
+    try {
+      q = AligulacService.getInstance().query(name);
+    } catch (RetrofitError e) {
+      if (e.getKind().equals(RetrofitError.Kind.NETWORK))
+        ((MainActivity) mCtx).showError(mPlayer, e.getMessage());
+      Log.e(TAG, e.getMessage());
+
+      //return empty list
+      return new ArrayList<AutocompletePlayer>();
+    }
 
     return q.getPlayers();
   }

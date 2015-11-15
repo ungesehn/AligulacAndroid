@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TypefaceTextView">
+        <attr name="typeface" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="LabelText">
+        <attr name="lt_label" format="string|reference"/>
+        <attr name="lt_text" format="string|reference"/>
+    </declare-styleable>
+</resources>
