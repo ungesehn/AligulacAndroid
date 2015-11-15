@@ -1,6 +1,6 @@
 Currently a personal project for exploring the Aligulac API on Android.
 
-If you have a bug or feature request either send me an email via the app or raise an issue [here](https://github.com/ungesehn/AligulacAndroid/issues)
+If you have a bug or feature request either send me an email via the app or raise an issue [here](https://github.com/ungesehn/AligulacAndroid/issues).
 
 You can try this yourself by providing an API key which can be obtained for free on the [Aligulac](http://aligulac.com/ "Aligulac homepage") website and adding them to your Build.Config.
 
