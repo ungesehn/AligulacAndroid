@@ -6,7 +6,7 @@ You can try this yourself by providing an API key which can be obtained for free
 
 #Setup
 
-If you want to run this project out of the box just add a secure.properties file to the project root containing the following fields: 
+If you want to run this project out of the box just add a `secure.properties` file to the project root containing the following fields: 
 ```
 API_KEY="YOUR_API_KEY"
 SUPPORT_MAIL=""
